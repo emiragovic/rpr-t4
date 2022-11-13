@@ -1,8 +1,6 @@
 package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.Laptop;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,6 +21,20 @@ public class LaptopDaoSerializableFile implements LaptopDao {
     }
 
     @Override
+    public Laptop getLaptop(String procesor) {
+        Laptop temp = new Laptop();
+        for (Laptop el : laptopi)
+            if (el.getProcesor().equals(procesor))
+                return el;
+        throw new NeodgovarajuciProcesorException("Neodgovarajuci procesor!");
+    }
+
+    @Override
+    public void napuniListu(ArrayList<Laptop> l) {
+        laptopi.addAll(l);
+    }
+
+    @Override
     public void dodajLaptopUFile(Laptop laptop) throws IOException {
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -35,27 +47,13 @@ public class LaptopDaoSerializableFile implements LaptopDao {
     }
 
     @Override
-    public Laptop getLaptop(String procesor) {
-        Laptop temp = new Laptop();
-        for(Laptop el : laptopi)
-            if (el.getProcesor().equals(procesor))
-                return el;
-        throw new NeodgovarajuciProcesorException("Neodgovarajuci procesor!");
-    }
-
-    @Override
-    public void napuniListu(ArrayList<Laptop> l) {
-        laptopi.addAll(l);
-    }
-
-    @Override
     public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException {
         ArrayList<Laptop> rez;
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream is = new ObjectInputStream(fis);
-        try{
+        try {
             rez = (ArrayList<Laptop>) is.readObject();
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return rez;

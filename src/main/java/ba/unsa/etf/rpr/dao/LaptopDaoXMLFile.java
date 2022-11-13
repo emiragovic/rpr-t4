@@ -27,6 +27,22 @@ public class LaptopDaoXMLFile implements LaptopDao {
         laptopi.add(laptop);
     }
 
+
+    @Override
+    public Laptop getLaptop(String procesor) {
+        Laptop temp = new Laptop();
+        for (Laptop el : laptopi)
+            if (el.getProcesor().equals(procesor))
+                return el;
+        throw new NeodgovarajuciProcesorException("Neodgovarajuci procesor!");
+    }
+
+    @Override
+    public void napuniListu(ArrayList<Laptop> l) {
+        laptopi.addAll(l);
+    }
+
+
     @Override
     public void dodajLaptopUFile(Laptop laptop) throws JsonProcessingException, FileNotFoundException {
         laptopi.add(laptop);
@@ -40,21 +56,6 @@ public class LaptopDaoXMLFile implements LaptopDao {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public Laptop getLaptop(String procesor) {
-        Laptop temp = new Laptop();
-        for (Laptop el : laptopi)
-            if (el.getProcesor().equals(procesor))
-                temp = el;
-        return temp;
-    }
-
-    @Override
-    public void napuniListu(ArrayList<Laptop> l) {
-        laptopi.addAll(l);
-    }
-
 
     @Override
     public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException {
