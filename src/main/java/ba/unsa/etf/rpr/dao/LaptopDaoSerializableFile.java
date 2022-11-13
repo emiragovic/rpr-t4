@@ -1,11 +1,10 @@
 package ba.unsa.etf.rpr.dao;
 
 import ba.unsa.etf.rpr.Laptop;
-import ba.unsa.etf.rpr.dao.LaptopDao;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class LaptopDaoSerializableFile implements LaptopDao {
@@ -15,7 +14,7 @@ public class LaptopDaoSerializableFile implements LaptopDao {
 
     public LaptopDaoSerializableFile() {
         laptopi = new ArrayList<>();
-        file = new File("src/main/resources/laptopi.dat");
+        file = new File("src/main/resources/laptopi.txt");
     }
 
     @Override
@@ -25,25 +24,40 @@ public class LaptopDaoSerializableFile implements LaptopDao {
 
     @Override
     public void dodajLaptopUFile(Laptop laptop) throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(Paths.get("src/main/resources/laptopi.dat")));
-        out.writeObject(laptop);
-        out.close();
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+
+        laptopi.add(laptop);
+        os.writeObject(laptopi);
+
+        os.close();
+        fos.close();
     }
 
     @Override
     public Laptop getLaptop(String procesor) {
-        return null;
+        Laptop temp = new Laptop();
+        for(Laptop el : laptopi)
+            if (el.getProcesor().equals(procesor))
+                return el;
+        throw new NeodgovarajuciProcesorException("Neodgovarajuci procesor!");
     }
 
     @Override
     public void napuniListu(ArrayList<Laptop> l) {
-        for (Laptop el : l)
-            laptopi.add(el);
+        laptopi.addAll(l);
     }
 
     @Override
-    public ArrayList<Laptop> vratiPodatkeIzDatoteke() {
-        ArrayList<Laptop> rez = new ArrayList<>();
+    public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException {
+        ArrayList<Laptop> rez;
+        FileInputStream fis = new FileInputStream(file);
+        ObjectInputStream is = new ObjectInputStream(fis);
+        try{
+            rez = (ArrayList<Laptop>) is.readObject();
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
         return rez;
     }
 }

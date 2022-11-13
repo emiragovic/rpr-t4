@@ -13,6 +13,33 @@ public class Laptop implements Serializable {
     private String grafickaKartica;
     private double velicinaEkrana;
 
+    public Laptop(String brend, String model, double cijena, int ram, int hdd, int ssd, String procesor, String grafickaKartica, double velicinaEkrana) {
+        this.brend = brend;
+        this.model = model;
+        this.cijena = cijena;
+        this.ram = ram;
+        this.hdd = hdd;
+        this.ssd = ssd;
+        this.procesor = procesor;
+        this.grafickaKartica = grafickaKartica;
+        this.velicinaEkrana = velicinaEkrana;
+    }
+
+    @Override
+    public String toString() {
+        return "LAPTOP {" +
+                "brand = '" + brend + '\'' +
+                ", model = '" + model + '\'' +
+                ", price = " + cijena +
+                ", RAM = " + ram +
+                ", HDD = " + hdd +
+                ", SSD = " + ssd +
+                ", CPU = '" + procesor + '\'' +
+                ", GPU = '" + grafickaKartica + '\'' +
+                ", screen_size = " + velicinaEkrana +
+                '}';
+    }
+
     public Laptop() {
     }
 
