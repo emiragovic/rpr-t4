@@ -38,25 +38,21 @@ public class LaptopDaoJSONFile implements LaptopDao {
     }
 
     @Override
-    public void dodajLaptopUFile(Laptop laptop) throws IOException {
+    public Laptop dodajLaptopUFile(Laptop laptop) throws IOException {
         laptopi.add(laptop);
-        try {
-            JsonMapper mapper = new JsonMapper();
-            String temp = mapper.writeValueAsString(laptopi);
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(temp.getBytes());
-            fos.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        JsonMapper mapper = new JsonMapper();
+        String temp = mapper.writeValueAsString(laptopi);
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(temp.getBytes());
+        fos.close();
+        return laptop;
     }
 
     @Override
     public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException {
         ArrayList<Laptop> rez;
         JsonMapper mapper = new JsonMapper();
-        rez = mapper.readValue(file, new TypeReference<ArrayList<Laptop>>() {
+        return mapper.readValue(file, new TypeReference<ArrayList<Laptop>>() {
         });
-        return rez;
     }
 }

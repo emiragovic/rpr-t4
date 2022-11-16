@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public interface LaptopDao {
     void dodajLaptopUListu(Laptop laptop);
 
-    void dodajLaptopUFile(Laptop laptop) throws IOException;
+    Laptop dodajLaptopUFile(Laptop laptop) throws IOException;
 
     Laptop getLaptop(String procesor);
 

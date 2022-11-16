@@ -25,6 +25,7 @@ public class Laptop implements Serializable {
         this.velicinaEkrana = velicinaEkrana;
     }
 
+
     @Override
     public String toString() {
         return "LAPTOP {" +

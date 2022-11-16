@@ -35,27 +35,21 @@ public class LaptopDaoSerializableFile implements LaptopDao {
     }
 
     @Override
-    public void dodajLaptopUFile(Laptop laptop) throws IOException {
+    public Laptop dodajLaptopUFile(Laptop laptop) throws IOException {
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream os = new ObjectOutputStream(fos);
-
         laptopi.add(laptop);
         os.writeObject(laptopi);
-
         os.close();
         fos.close();
+        return laptop;
     }
 
     @Override
-    public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException {
+    public ArrayList<Laptop> vratiPodatkeIzDatoteke() throws IOException, ClassNotFoundException {
         ArrayList<Laptop> rez;
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream is = new ObjectInputStream(fis);
-        try {
-            rez = (ArrayList<Laptop>) is.readObject();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return rez;
+        return (ArrayList<Laptop>) is.readObject();
     }
 }
